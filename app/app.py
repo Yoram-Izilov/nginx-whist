@@ -2,6 +2,7 @@ from flask import Flask, request, make_response
 import mysql.connector
 import os
 from datetime import datetime
+import socket
 
 app = Flask(__name__)
 
@@ -29,7 +30,14 @@ def index():
     cursor.execute("UPDATE counter SET count = count + 1")
     conn.commit()
 
-    response = make_response(f"Server IP: {server_ip}")
+    # response = make_response(f"Server IP: {server_ip}")
+        
+    # Get the local machine name
+    host_name = socket.gethostname()
+    # Get the IP address using the host name
+    local_ip = socket.gethostbyname(host_name)
+    response = make_response(f"app IP Address: {local_ip}")
+    
     response.set_cookie("server_ip", server_ip, max_age=300)  # Sticky session for 5 min
     return response
 
