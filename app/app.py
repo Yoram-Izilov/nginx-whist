@@ -38,7 +38,7 @@ def index():
     local_ip = socket.gethostbyname(host_name)
     response = make_response(f"app IP Address: {local_ip}")
     
-    response.set_cookie("server_ip", server_ip, max_age=300)  # Sticky session for 5 min
+    response.set_cookie("server_ip", local_ip, max_age=300)  # Sticky session for 5 min
     return response
 
 @app.route("/showcount")
