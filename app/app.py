@@ -1,7 +1,6 @@
 from flask import Flask, request, make_response
 import mysql.connector
 import os
-import logging
 from datetime import datetime
 
 app = Flask(__name__)
@@ -17,9 +16,6 @@ db_config = {
 conn = mysql.connector.connect(**db_config)
 cursor = conn.cursor()
 
-# Logger setup
-logging.basicConfig(filename="/app/logs/app.log", level=logging.INFO)
-
 @app.route("/")
 def index():
     client_ip = request.remote_addr
@@ -32,9 +28,6 @@ def index():
 
     cursor.execute("UPDATE counter SET count = count + 1")
     conn.commit()
-
-    cursor.execute("SELECT count FROM counter")
-    count = cursor.fetchone()[0]
 
     response = make_response(f"Server IP: {server_ip}")
     response.set_cookie("server_ip", server_ip, max_age=300)  # Sticky session for 5 min

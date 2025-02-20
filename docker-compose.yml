@@ -13,7 +13,6 @@ services:
 
   app:
     build: ./app
-    container_name: app
     deploy:
       replicas: 3
     environment:

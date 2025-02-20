@@ -1,10 +1,4 @@
 #!/bin/bash
 
-if [ $# -ne 1 ]; then
-    echo "Usage: $0 <scale-number>"
-    exit 1
-fi
-
-SCALE=$1
-
-docker-compose up -d --scale app=$SCALE
+# scales up/down the app containers to 5
+docker compose up -d --scale app=5
