@@ -19,26 +19,26 @@ cursor = conn.cursor()
 
 @app.route("/")
 def index():
+    # Get the local machine name
+    host_name = socket.gethostname()
+    # Get the IP address using the host name
+    local_ip = socket.gethostbyname(host_name)
+
     client_ip = request.remote_addr
     server_ip = request.host
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     cursor.execute("INSERT INTO access_log (client_ip, server_ip, timestamp) VALUES (%s, %s, %s)", 
-                   (client_ip, server_ip, timestamp))
+                   (local_ip, server_ip, timestamp))
     conn.commit()
 
     cursor.execute("UPDATE counter SET count = count + 1")
     conn.commit()
 
     # response = make_response(f"Server IP: {server_ip}")
-        
-    # Get the local machine name
-    host_name = socket.gethostname()
-    # Get the IP address using the host name
-    local_ip = socket.gethostbyname(host_name)
     response = make_response(f"app IP Address: {local_ip}")
     
-    response.set_cookie("server_ip", local_ip, max_age=300)  # Sticky session for 5 min
+    response.set_cookie("internal_ip", local_ip, max_age=300)  # Sticky session for 5 min
     return response
 
 @app.route("/showcount")
