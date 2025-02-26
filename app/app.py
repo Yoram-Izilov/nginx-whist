@@ -9,7 +9,7 @@ app = Flask(__name__)
 # Database connection
 db_config = {
     "host": os.getenv("RDS_HOST", "database-1.coow8klldjgb.us-east-1.rds.amazonaws.com"),
-    "user": os.getenv("DB_USER", "root"),
+    "user": os.getenv("DB_USER", "admin"),
     "password": os.getenv("DB_PASSWORD", "rootpassword"),
     "database": os.getenv("DB_NAME", "app_db")
 }
