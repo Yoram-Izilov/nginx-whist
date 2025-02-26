@@ -73,8 +73,12 @@ jobs:
     - name: Build Docker image
       run: |
         docker build -t ${{ env.ECR_REPOSITORY }}:latest ./app
-        docker tag ${{ env.ECR_REPOSITORY }}:latest ${{ steps.login-ecr.outputs.registry }}/${{ env.BRANCH_NAME }}-${{ env.COMMIT_SHA }}:latest
-        docker push ${{ env.ECR_REPOSITORY }}:latest ${{ steps.login-ecr.outputs.registry }}/${{ env.BRANCH_NAME }}-${{ env.COMMIT_SHA }}
+        # Tag the Docker image for ECR
+        docker tag ${{ env.ECR_REPOSITORY }}:latest ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
+        docker tag ${{ env.ECR_REPOSITORY }}:latest ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.BRANCH_NAME }}-${{ env.COMMIT_SHA }}
+        # Push the Docker image to ECR with both tags
+        docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
+        docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.BRANCH_NAME }}-${{ env.COMMIT_SHA }}
 
     # - name: Fill in the new image ID in the Amazon ECS task definition
     #   id: task-def
