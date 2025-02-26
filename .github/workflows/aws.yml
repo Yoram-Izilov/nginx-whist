@@ -72,7 +72,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t ${{ env.ECR_REPOSITORY }}:latest -f ./app
+        docker build -t ${{ env.ECR_REPOSITORY }}:latest ./app
         docker tag ${{ env.ECR_REPOSITORY }}:latest ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
         docker push ${{ env.ECR_REPOSITORY }}:latest ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.BRANCH_NAME }}-${{ env.COMMIT_SHA }}
 
