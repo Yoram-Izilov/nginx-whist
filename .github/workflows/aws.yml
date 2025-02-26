@@ -42,7 +42,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t ${{ env.ECR_REPOSITORY }}:latest ./app
+        docker build -t ${{ env.ECR_REPOSITORY }}:latest ./nginx
         # Tag the Docker image for ECR
         docker tag ${{ env.ECR_REPOSITORY }}:latest ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
         docker tag ${{ env.ECR_REPOSITORY }}:latest ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.BRANCH_NAME }}-${{ env.COMMIT_SHA }}
